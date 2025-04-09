@@ -5,27 +5,12 @@ import (
 	"testing"
 )
 
-// Testing if input gets translated to expected token
-func TestNextTokenSpecialChar(t *testing.T) {
-	input := `=+(){},;`
+type ExpectedToken struct {
+	expectedType    token.TokenType
+	expectedLiteral string
+}
 
-	tests := []struct {
-		expectedType    token.TokenType
-		expectedLiteral string
-	}{
-		{token.ASSIGN, "="},
-		{token.PLUS, "+"},
-		{token.LPAREN, "("},
-		{token.RPAREN, ")"},
-		{token.LBRACE, "{"},
-		{token.RBRACE, "}"},
-		{token.COMMA, ","},
-		{token.SEMICOLON, ";"},
-		{token.EOF, ""},
-	}
-
-	l := New(input)
-
+func cycleExpectedTokens(l *Lexer, tests []ExpectedToken, t *testing.T) {
 	for i, tt := range tests {
 		tok := l.NextToken()
 
@@ -41,6 +26,36 @@ func TestNextTokenSpecialChar(t *testing.T) {
 	}
 }
 
+// Testing if input gets translated to expected token
+func TestNextTokenSpecialChar(t *testing.T) {
+	input := `let five = 5;
+	let ten = 10;
+	let add = fn(x, y) {
+		x + y;
+	};
+	
+	let result = add(five, ten);
+		!-/*5;
+	5 < 10 > 5;
+	`
+
+	tests := []ExpectedToken{
+		{token.ASSIGN, "="},
+		{token.PLUS, "+"},
+		{token.LPAREN, "("},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.RBRACE, "}"},
+		{token.COMMA, ","},
+		{token.SEMICOLON, ";"},
+		{token.EOF, ""},
+	}
+
+	l := New(input)
+
+	cycleExpectedTokens(l, tests, t)
+}
+
 func TestNextToken(t *testing.T) {
 	input := `let five = 5;
 	let ten = 10;
@@ -52,10 +67,7 @@ func TestNextToken(t *testing.T) {
 	let result = add(five, ten);
 	`
 
-	tests := []struct {
-		expectedType    token.TokenType
-		expectedLiteral string
-	}{
+	tests := []ExpectedToken{
 		{token.LET, "let"},
 		{token.IDENT, "five"},
 		{token.ASSIGN, "="},
@@ -96,18 +108,5 @@ func TestNextToken(t *testing.T) {
 	}
 
 	l := New(input)
-
-	for i, tt := range tests {
-		tok := l.NextToken()
-
-		if tok.Type != tt.expectedType {
-			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i, tt.expectedType, tok.Type)
-		}
-
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q",
-				i, tt.expectedLiteral, tok.Literal)
-		}
-	}
+	cycleExpectedTokens(l, tests, t)
 }
