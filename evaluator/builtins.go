@@ -1,11 +1,15 @@
 package evaluator
 
-import "josiahLang/object"
+import (
+	"fmt"
+	"josiahLang/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"len":  {Fn: builtInLen},
 	"last": {Fn: last},
 	"push": {Fn: push},
+	"puts": {Fn: puts},
 }
 
 func builtInLen(args ...object.Object) object.Object {
@@ -60,4 +64,12 @@ func push(args ...object.Object) object.Object {
 	newElements[length] = args[1]
 
 	return &object.Array{Elements: newElements}
+}
+
+func puts(args ...object.Object) object.Object {
+	for _, arg := range args {
+		fmt.Println(arg.Inspect())
+	}
+
+	return NULL
 }
