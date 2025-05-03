@@ -77,6 +77,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return args[0]
 		}
 		return applyFunction(function, args)
+	case *ast.StringLiteral:
+		return &object.String{Value: node.Value}
 	}
 
 	return nil
@@ -165,6 +167,8 @@ func evalInfixExpression(operator string, left object.Object, right object.Objec
 	switch {
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right)
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
+		return evalStringInfixExpression(operator, left, right)
 	case operator == "==":
 		return nativeBoolToBooleanObject(left == right) // Note: we pass the pointer to Bool objects which will always have the same value
 	case operator == "!=":
@@ -220,10 +224,22 @@ func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Obje
 func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object {
 	val, ok := env.Get(node.Value)
 	if !ok {
-		return newError("identifier not found: " + node.Value)
+		return newError("identifier not found: %s", node.Value)
 	}
 
 	return val
+}
+
+func evalStringInfixExpression(operator string, left object.Object, right object.Object) object.Object {
+	// TODO: Here we can handle == or != string comparisons
+	if operator != "+" {
+		return newError("unknown operator: %s %s %s", left.Type(), operator, right.Type())
+	}
+
+	leftVal := left.(*object.String).Value
+	rightVal := right.(*object.String).Value
+
+	return &object.String{Value: leftVal + rightVal}
 }
 
 func isTruthy(obj object.Object) bool {
