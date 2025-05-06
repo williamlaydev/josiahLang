@@ -1,5 +1,7 @@
 package object
 
+import "fmt"
+
 func NewEnclosedEnvironment(outer *Environment) *Environment {
 	env := NewEnvironment()
 	env.outer = outer
@@ -28,4 +30,10 @@ func (e *Environment) Get(name string) (Object, bool) {
 func (e *Environment) Set(name string, val Object) Object {
 	e.store[name] = val
 	return val
+}
+
+func (e *Environment) Print() {
+	for key, value := range e.store {
+		fmt.Printf("Key: %s, Value: %v\n", key, value)
+	}
 }
