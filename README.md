@@ -1,34 +1,44 @@
-# Language syntax
+# Language Syntax
 
 ## Semantics
 
-- ; (semi-colons) are required after variable declarations or in-builts.
-- Weak typed language
+- Semicolons (`;`) are required after variable declarations or built-in functions.
+- Weakly typed language.
 
-## Variable declaration
+## Variable Declaration
 
-```
+```plaintext
 josiah stringVal = "Josiah is awesome";
 josiah integerVal = 2;
 ```
 
-## Data-types
+## Data Types
 
-Integers - 2
-Strings - "val"
-Arrays - josiah arr = ["test", 2, "anotherTest"]
-HashMaps - josiah map = {"keyName": 1}
+- Integers: `2`
+- Strings: `"val"`
+- Arrays: `josiah arr = ["test", 2, "anotherTest"]`
+- HashMaps: `josiah map = {"keyName": 1}`
 
 ## Built-in Functions
 
-/turn this into a table
-len(any) - length
-last(array) - value in the last index of array
-push(array, val) - Push a value into an array
-print(val) - Print a value
+| Function           | Description                                       |
+| ------------------ | ------------------------------------------------- |
+| `len(any)`         | Returns the length of the input.                  |
+| `last(array)`      | Returns the value at the last index of the array. |
+| `push(array, val)` | Pushes a value into an array.                     |
+| `print(val)`       | Prints a value to the output.                     |
 
-## Upcoming features
+## Upcoming Features
 
 - For loops
 - Floats
 - ??
+
+# Write Your First Program
+
+```plaintext
+josiah text = "hello world";
+print(text);
+```
+
+> Run the program using: `./josiah.exe -s <fileName>.josiah`
