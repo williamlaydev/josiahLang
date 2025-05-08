@@ -1,6 +1,8 @@
 josiah test = "name";
 josiah x = 5;
 
-josiahFunc testFunc() {test != "i am";}
+josiahFunc testFunc() {
+    test != "i am";
+}
 
-testFunc();
+print(testFunc());
