@@ -19,6 +19,14 @@ josiah integerVal = 2;
 - Arrays: `josiah arr = ["test", 2, "anotherTest"]`
 - HashMaps: `josiah map = {"keyName": 1}`
 
+## Functions
+
+```plaintext
+josiahFunc testFunc() {
+    print("hi")
+}
+```
+
 ## Built-in Functions
 
 | Function           | Description                                       |
