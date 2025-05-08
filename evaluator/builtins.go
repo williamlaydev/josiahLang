@@ -6,10 +6,10 @@ import (
 )
 
 var builtins = map[string]*object.Builtin{
-	"len":  {Fn: builtInLen},
-	"last": {Fn: last},
-	"push": {Fn: push},
-	"puts": {Fn: puts},
+	"len":   {Fn: builtInLen},
+	"last":  {Fn: last},
+	"push":  {Fn: push},
+	"print": {Fn: print},
 }
 
 func builtInLen(args ...object.Object) object.Object {
@@ -66,7 +66,7 @@ func push(args ...object.Object) object.Object {
 	return &object.Array{Elements: newElements}
 }
 
-func puts(args ...object.Object) object.Object {
+func print(args ...object.Object) object.Object {
 	for _, arg := range args {
 		fmt.Println(arg.Inspect())
 	}
